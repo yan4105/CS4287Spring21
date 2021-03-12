@@ -74,46 +74,44 @@ Vagrant.configure("2") do |config|
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
+
+     export DEBIAN_FRONTEND=noninteractive
      apt-get update
-     apt-get install -y python3
-     # goal is to show we make a mistake and then we fix it.
-     # apt-get install -y pip3
-     apt-get install -y python3-pip
+     sudo apt-get -y install python3-pip
      apt-add-repository --yes --update ppa:ansible/ansible
-     apt-get -y install ansible
-     apt-get purge -y python2.7
+     # apt-get -y install ansible
+     
+     # to use with openstack
+     yes | pip3 install ansible
+     
+     # sudo apt-get -y purge python2.7
 	
-     # move MyInventory to /etc/ansible/hosts
-     # yes | cp -r /src/ansible/MyInventory /etc/ansible/hosts
-     # yes | pip3 install ansible
+     mkdir -p /etc/ansible
      yes | cp -r /src/ansible/ansible.cfg /etc/ansible/ansible.cfg
      
      # try to fix the openstacksdk is required error
-     yes | pip install decorator===4.4.1	
+     # yes | pip3 install decorator===4.4.1	
 
      # try installing openstacksdk
-     yes | pip3 install --upgrade pip --ignore-installed PyYAML
-     yes | pip3 install --upgrade setuptools
-     yes | pip3 install openstacksdk
-     # yes | pip3 install python-openstackclient
-     apt-get -y install python3-openstacksdk
+     # yes | pip3 install --upgrade pip --ignore-installed PyYAML
+     # yes | pip3 install --upgrade setuptools
+     yes | pip3 install openstacksdk==0.12
+     yes | pip3 install python-openstackclient
+     # apt-get -y install python3-openstacksdk
      
      # try install ansible.cloud to enable ansible.cloud.server_info for playbook_get_cloud_vm_info.yml
      ansible-galaxy collection install openstack.cloud
 
-     # try installing openstack
      # apt-get -y install python3-openstackclient
      
-     # to use with openstack
-     yes | pip install ansible
 
-     yes | apt autoremove
+     yes | sudo apt autoremove
 
      # alias python to python3
      # alias python=python3
     
-     mkdir -p ~/.config/openstack 
-     cp -r /src/ansible/sample_clouds.yaml ~/.config/openstack/clouds.yaml
+     # mkdir -p ~/.config/openstack 
+     # cp -r /src/ansible/sample_clouds.yaml ~/.config/openstack/clouds.yaml
   SHELL
   
   # add private key to vm
