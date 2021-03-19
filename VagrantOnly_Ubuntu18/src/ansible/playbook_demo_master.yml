@@ -1,87 +1,87 @@
 ---
-#
-# EECS 4287/5287: Principles of Cloud Computing
-# Author: Aniruddha Gokhale
-# Created: Fall 2017
-# Modified: Fall 2020
-#
-# This playbook is our demo master file
-# The goal is to show how to have a single master file which then
-# includes multiple plays according to some well-designed choreography
-#
-# One way to reuse existing playbooks is to simply import them as
-# import_playbook: <playbook>
-# I show this approach for actions I do on the local VM where I let the
-# playbook define the hosts: and other params
-# However for other plays, I show a different approach using import_tasks or
-# include_tasks statements.
-#
-# The import_* statements are statically included and parsed while include_*
-# are dynamically included as the playbook executes. Thus, errors can be found
-# only when the task gets included at runtime. However, there are advantages
-# of including vs importing because a runtime value of variables may define
-# runtime behavior as opposed to a static inclusion.
-#
-# See https://docs.ansible.com/ansible/latest/user_guide/playbooks_reuse.html for
-# detailed explanation
-#
-
 
 
 #####################################################
 ### Play 1: Create cloud VMs
 #####################################################
-- name: "Play 1: Create cloud VMs"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user:  ubuntu       # note that the user is ubuntu for
-                             # vagrant-created VM else use the
-                             # appropriate user name
 
-  become_user: no            # No need for sudo as we are not installing anything
+- name: Play 1 Create cloud VMs
+  hosts: MyLocalVMs
+  remote_user: parallels
 
-  tasks:    # the task to be performed (here I am showing the effect of include_)
+  tasks:
   - include_tasks: playbook_create_cloud_vms.yml
+
+
 
 #####################################################
 ### Play 2: Setup kafka
 #####################################################
+
 - name: "Play 2: Setup kafka"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user: cc
+
+  hosts: MyChameleonVMs       # my list of VMs on chosen cloud
+  remote_user:  cc        # remote user is cc but change as appropriate
+  become: yes               # run as sudo
+
+
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
+
   - include_tasks: playbook_kafka_setup.yml
+
+
 
 #####################################################
 ### Play 3: Copy consumer.py to VM2
 #####################################################
+
 - name: "Play 3: Copy consumer code to VM2"
-  hosts: VM2  # change to the appropriate alias
-  remote_user: cc   # change to the appropriate user name on the cloud
-  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
-    - openstack.cloud
+
+  hosts: MyLocalVMs          # specified in the MyInventory file
+
+                             # vagrant-created VM else use the
+
+                             # appropriate user name
 
   become_user: no            # No need for sudo as we are not installing anything
 
+
+
   tasks:    # the task to be performed (here I am showing the effect of include_)
+
   - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
+
+
 
 ###########################################
 # Play 3: Now perform some activities on our cloud VMs time while include_ will give error
 # only while running the play
 ###########################################
+
 - name: "Play 4: Start Zookeeper, Kafka, and consumer"
-  hosts: VM2  # change to the appropriate alias
-  remote_user: cc   # change to the appropriate user name on the cloud
+  hosts: MyChameleonVMs
+
   strategy: debug        # start a debugger on error
+
   become: yes               # run as sudo
+
   collections:               # import the plugin
+
   - openstack.cloud
 
+
+
   ### All the tasks related to the cloud VMs ###
+
   # note that since we already defined the hosts and remote_user parameters
+
   # above, we simply import the tasks (could have included) and these
+
   # tasks are in the playbooks defined in my tasks/ directory
+
   tasks:
+
   - include_tasks: playbook_start_server.yml
+
 ...
