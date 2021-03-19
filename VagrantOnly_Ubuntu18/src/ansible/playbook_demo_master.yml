@@ -36,7 +36,7 @@
   hosts: MyLocalVMs          # specified in the MyInventory file
   gather_facts: no           # vagrant-created VM else use the
                              # appropriate user name
-  become_user: no            # No need for sudo as we are not installing anything
+  become_user: yes            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
