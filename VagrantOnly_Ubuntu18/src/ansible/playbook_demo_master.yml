@@ -5,7 +5,7 @@
 ### Play 1: Create cloud VMs
 #####################################################
 
-# - name: Play 1 Create cloud VMs
+#- name: Play 1 Create cloud VMs
 #  hosts: MyLocalVMs
 #  remote_user: parallels
 
@@ -61,6 +61,8 @@
 
 - name: "Play 4: Start Zookeeper, Kafka, and consumer"
   hosts: MyChameleonVMs
+
+  remote_user: cc
 
   strategy: debug        # start a debugger on error
 
