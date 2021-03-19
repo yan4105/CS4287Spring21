@@ -6,11 +6,11 @@
 - name: 'mkdir kafka'
   raw: mkdir -p /home/cc/kafka
 - name: 'umcompress tgz file'
-  raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
+  raw: stat /home/cc/kafka/ || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
 - name: 'remove server.properties'
   raw: sudo rm /home/cc/kafka/config/server.properties || true
 - name: 'chmod config'
-  raw: sudo chmod 777 /home/cc/kafka/config
+  raw: sudo chmod -R 777 /home/cc/kafka/
 - name: 'copy kafka config to config folder'
   copy:
     src: server.properties
@@ -19,5 +19,10 @@
   raw: yes | sudo apt update
 - name: 'install java'
   raw: yes | sudo apt install default-jre
-
+- name: 'install kafka for python'
+  raw: pip3 install kafka-python
+- name: 'allow ufw rules for 9092'
+  raw: sudo ufw allow 9092
+- name: 'allow ufw rules for 2181'
+  raw: sudo ufw allow 2181
 ...
