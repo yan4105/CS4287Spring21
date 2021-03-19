@@ -70,6 +70,9 @@ Vagrant.configure("2") do |config|
   # View the documentation for the provider you are using for more
   # information on available options.
   
+  # add private key to vm
+  config.vm.provision "file", source: "/home/yan/Documents/Personal/2021Spring/CS4287/VagrantOnly_Ubuntu18/mis/id_ed25519", destination: "~/.ssh/id_ed25519"
+  
   # Enable provisioning with a shell script. Additional provisioners such as
   # Puppet, Chef, Ansible, Salt, and Docker are also available. Please see the
   # documentation for more information about their specific syntax and use.
@@ -112,9 +115,11 @@ Vagrant.configure("2") do |config|
     
      # mkdir -p ~/.config/openstack 
      # cp -r /src/ansible/sample_clouds.yaml ~/.config/openstack/clouds.yaml
+
+     sudo cp -r /src/id_ed25519 ~/.ssh/id_ed25519
+     ansible-playbook /src/ansible/playbook_demo_master.yml
   SHELL
   
-  # add private key to vm
-  config.vm.provision "file", source: "/home/yan/Documents/Personal/2021Spring/CS4287/VagrantOnly_Ubuntu18/mis/id_ed25519", destination: "~/.ssh/id_ed25519"
+
   
 end
