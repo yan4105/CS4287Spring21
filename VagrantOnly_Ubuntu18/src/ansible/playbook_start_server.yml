@@ -16,8 +16,6 @@
     chdir: /home/cc/kafka/
     cmd: bin/kafka-server-start.sh config/server.properties
 - name: Start consumer
-  async: 60
-  poll: 0
   ansible.builtin.shell:
     chdir: /home/cc/src/
     cmd: python3 consumer.py
