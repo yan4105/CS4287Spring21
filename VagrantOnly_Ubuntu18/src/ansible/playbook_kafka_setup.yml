@@ -28,5 +28,16 @@
       raw: mkdir -p /home/cc/kafka
     - name: 'umcompress tgz file'
       raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
+<<<<<<< HEAD
+    - name: 'remove server.properties'
+      raw: sudo rm /home/cc/kafka/config/server.properties || true
+    - name: 'copy kafka config to config folder'
+      copy:
+        src: server.properties
+        dest: /home/cc/kafka/config/server.properties        
+...
+
+=======
+>>>>>>> b7e335c906a723d474bbac5232bf1fe68e812bee
 
 ...
