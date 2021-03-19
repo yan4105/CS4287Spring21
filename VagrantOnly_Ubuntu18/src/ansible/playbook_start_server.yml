@@ -2,7 +2,7 @@
 - name: Delete temp files
   ansible.builtin.shell:
     chdir: /tmp/
-    cmd: rm -rf kafka-logs/ zookeeper/
+    cmd: sudo rm -rf kafka-logs/ zookeeper/
 - name: Start Zookeeper
   async: 60
   poll: 0
