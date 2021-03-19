@@ -40,7 +40,7 @@
   become_user: no            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: tasks/playbook_create_cloud_vms.yml
+  - include_tasks: playbook_create_cloud_vms.yml
 
 #####################################################
 ### Play 2: Setup kafka
@@ -53,7 +53,7 @@
   become_user: no            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: tasks/playbook_kafka_setup.yml
+  - include_tasks: playbook_kafka_setup.yml
 
 #####################################################
 ### Play 3: Copy consumer.py to VM2
@@ -66,7 +66,7 @@
   become_user: no            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: tasks/playbook_copy_consumer_to_cloud_vm.yml
+  - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
 
 ###########################################
 # Play 3: Now perform some activities on our cloud VMs time while include_ will give error
@@ -83,5 +83,5 @@
   # above, we simply import the tasks (could have included) and these
   # tasks are in the playbooks defined in my tasks/ directory
   tasks:
-  - include_tasks: tasks/playbook_start_server.yml
+  - include_tasks: playbook_start_server.yml
 ...
