@@ -9,6 +9,8 @@
   raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
 - name: 'remove server.properties'
   raw: sudo rm /home/cc/kafka/config/server.properties || true
+- name: 'chmod config'
+  raw: sudo chmod 777 /home/cc/kafka/config
 - name: 'copy kafka config to config folder'
   copy:
     src: server.properties

@@ -8,6 +8,10 @@
 # This playbook will copy a file from local to remote machine.
 # Our cloud can be Horizon Cloud or Chameleon or AWS etc
 # See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+- name: Make /home/cc/src dir if not exist
+  raw: sudo mkdir -p /home/cc/src
+- name: chmod 777 /home/cc/src
+  raw: sudo chmod 777 /home/cc/src
 - name: Copy a file from local to remote
   copy:
       src: ../kafka/consumer.py   # here you can give absolute path also.
