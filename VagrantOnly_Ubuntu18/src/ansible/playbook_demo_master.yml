@@ -60,7 +60,7 @@
 ###########################################
 
 - name: "Play 4: Start Zookeeper, Kafka, and consumer"
-  hosts: MyChameleonVMs
+  hosts: VM2
 
   remote_user: cc
 
