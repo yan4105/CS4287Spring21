@@ -22,7 +22,6 @@
   gather_facts: no
   hosts: MyChameleonVMs       # my list of VMs on chosen cloud
   remote_user:  cc        # remote user is cc but change as appropriate
-  become: yes               # run as sudo
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - include_tasks: playbook_kafka_setup.yml
@@ -54,7 +53,6 @@
   hosts: VM2
   remote_user: cc
   strategy: debug        # start a debugger on error
-  become: yes               # run as sudo
   collections:               # import the plugin
   - openstack.cloud
 
