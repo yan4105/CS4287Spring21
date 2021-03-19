@@ -9,24 +9,10 @@
     ansible.builtin.shell:
       chdir: /home/kafka/
       cmd: bin/zookeeper-server-start.sh config/zookeeper.properties
-
-- hosts: VM2
-  remote_user: cc   # change the user to whatever is the user on the cloud VM
-  collections:      # this is new starting with Ansible 2.9 (akin to importing package)
-    - openstack.cloud
-
-  tasks:
   - name: Start Kafka
     ansible.builtin.shell:
       chdir: /home/kafka/
       cmd: bin/kafka-server-start.sh config/server.properties
-
-- hosts: VM2
-  remote_user: cc   # change the user to whatever is the user on the cloud VM
-  collections:      # this is new starting with Ansible 2.9 (akin to importing package)
-    - openstack.cloud
-
-  tasks:
   - name: Start consumer
     ansible.builtin.shell:
       chdir: /home/src/
