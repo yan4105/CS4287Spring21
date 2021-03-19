@@ -13,4 +13,9 @@
   copy:
     src: server.properties
     dest: /home/cc/kafka/config/server.properties
+- name: 'update apt'
+  raw: yes | sudo apt update
+- name: 'install java'
+  raw: yes | sudo apt install default-jre
+
 ...
