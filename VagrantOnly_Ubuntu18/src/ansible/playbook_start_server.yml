@@ -1,14 +1,14 @@
 ---
 - name: Start Zookeeper
   ansible.builtin.shell:
-    chdir: /home/kafka/
+    chdir: /home/cc/kafka/
     cmd: bin/zookeeper-server-start.sh config/zookeeper.properties
 - name: Start Kafka
   ansible.builtin.shell:
-    chdir: /home/kafka/
+    chdir: /home/cc/kafka/
     cmd: bin/kafka-server-start.sh config/server.properties
 - name: Start consumer
   ansible.builtin.shell:
-    chdir: /home/src/
+    chdir: /home/cc/src/
     cmd: python3 consumer.py
 ...
