@@ -1,0 +1,15 @@
+- name: Launch Cloud VMs
+  hosts: localhost
+  tasks:
+    - name: Launch VM 1
+      os_server:
+        image: CC-Ubuntu18.04-20201016
+        name: xu.vm1
+        key: ~/.ssh/domathnick
+        key_name: domathnick
+        availability_zone: nova
+        flavor: m1.small
+        state: present
+        network: CH-819381-net
+        floating_ips: 129.114.25.83
+        security_groups: default, ENABLE_HTTP_HTTPS, ENABLE_SSH, ENABLE_KAFKA_COUCHDB
