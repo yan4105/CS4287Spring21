@@ -4,8 +4,7 @@
   os_server:
     image: CC-Ubuntu18.04-20201016
     name: xu.vm2
-    key: ~/.ssh/domathnick.pub
-    key_name: domathnick
+    key_name: pub
     availability_zone: nova
     flavor: m1.small
     state: present
@@ -17,8 +16,7 @@
   os_server:
     image: CC-Ubuntu18.04-20201016
     name: xu.vm3
-    key: ~/.ssh/domathnick.pub
-    key_name: domathnick
+    key_name: pub
     availability_zone: nova
     flavor: m1.small
     state: present
