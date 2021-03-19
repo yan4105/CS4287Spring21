@@ -5,12 +5,12 @@
 ### Play 1: Create cloud VMs
 #####################################################
 
-- name: Play 1 Create cloud VMs
-  hosts: MyLocalVMs
-  remote_user: parallels
+# - name: Play 1 Create cloud VMs
+#  hosts: MyLocalVMs
+#  remote_user: parallels
 
-  tasks:
-  - include_tasks: playbook_create_cloud_vms.yml
+#  tasks:
+#  - include_tasks: playbook_create_cloud_vms.yml
 
 
 
