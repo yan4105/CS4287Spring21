@@ -47,10 +47,7 @@
 #####################################################
 - name: "Play 2: Setup kafka"
   hosts: MyLocalVMs          # specified in the MyInventory file
-                             # vagrant-created VM else use the
-                             # appropriate user name
-
-  become_user: no            # No need for sudo as we are not installing anything
+  remote_user: cc
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - include_tasks: playbook_kafka_setup.yml
@@ -59,9 +56,10 @@
 ### Play 3: Copy consumer.py to VM2
 #####################################################
 - name: "Play 3: Copy consumer code to VM2"
-  hosts: MyLocalVMs          # specified in the MyInventory file
-                             # vagrant-created VM else use the
-                             # appropriate user name
+  hosts: VM2  # change to the appropriate alias
+  remote_user: cc   # change to the appropriate user name on the cloud
+  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+    - openstack.cloud
 
   become_user: no            # No need for sudo as we are not installing anything
 
@@ -73,6 +71,8 @@
 # only while running the play
 ###########################################
 - name: "Play 4: Start Zookeeper, Kafka, and consumer"
+  hosts: VM2  # change to the appropriate alias
+  remote_user: cc   # change to the appropriate user name on the cloud
   strategy: debug        # start a debugger on error
   become: yes               # run as sudo
   collections:               # import the plugin

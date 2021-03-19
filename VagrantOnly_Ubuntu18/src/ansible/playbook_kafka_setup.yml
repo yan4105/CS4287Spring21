@@ -1,43 +1,16 @@
 ---
-#
-# EECS 4287/5287: Principles of Cloud Computing
-# Author: Aniruddha Gokhale
-# Created: Fall 2016
-# Modified: Fall 2020
-#
-# This playbook will install python on our Cloud VM
-# Python is needed to run Ansible.  Python is the first thing we need.
-# But if Python doesn't exist on the machine, then how can ansible
-# execute. This is a chicken-and-egg problem. To overcome this
-# Ansible supports "pre_tasks" which can be raw.
-#
-- hosts: MyChameleonVMs       # my list of VMs on chosen cloud
-  remote_user:  cc        # remote user is cc but change as appropriate
-  become: yes               # run as sudo
-  gather_facts: no        # do not gather facts from remote machine
-  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
-    - openstack.cloud
-  pre_tasks:       # Task is something a playbook is supposed
-                            # to execute. Tasks contain actions which
-                            # are modules and their arguments
-    - name: 'create downloads foler'
-      raw: mkdir -p /home/cc/Downloads
-    - name: 'curl download kafka binary file is not already exists'
-      raw: stat /home/cc/Downloads/kafka.tgz || curl "https://apache.claz.org/kafka/2.7.0/kafka_2.12-2.7.0.tgz" -o /home/cc/Downloads/kafka.tgz
-    - name: 'mkdir kafka'
-      raw: mkdir -p /home/cc/kafka
-    - name: 'umcompress tgz file'
-      raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
-<<<<<<< HEAD
-    - name: 'remove server.properties'
-      raw: sudo rm /home/cc/kafka/config/server.properties || true
-    - name: 'copy kafka config to config folder'
-      copy:
-        src: server.properties
-        dest: /home/cc/kafka/config/server.properties        
-...
-
-=======
->>>>>>> b7e335c906a723d474bbac5232bf1fe68e812bee
-
+- name: 'create downloads foler'
+  raw: mkdir -p /home/cc/Downloads
+- name: 'curl download kafka binary file is not already exists'
+  raw: stat /home/cc/Downloads/kafka.tgz || curl "https://apache.claz.org/kafka/2.7.0/kafka_2.12-2.7.0.tgz" -o /home/cc/Downloads/kafka.tgz
+- name: 'mkdir kafka'
+  raw: mkdir -p /home/cc/kafka
+- name: 'umcompress tgz file'
+  raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
+- name: 'remove server.properties'
+  raw: sudo rm /home/cc/kafka/config/server.properties || true
+- name: 'copy kafka config to config folder'
+  copy:
+    src: server.properties
+    dest: /home/cc/kafka/config/server.properties
 ...
