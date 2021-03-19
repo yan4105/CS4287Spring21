@@ -11,6 +11,6 @@
 - name: Copy a file from local to remote
   copy:
       src: ../kafka/consumer.py   # here you can give absolute path also.
-      dest: /src    # destination directory into which this file will get copied.
+      dest: /home/cc/src    # destination directory into which this file will get copied.
                                       # if you want to name it differently, give the file name also.
 ...
