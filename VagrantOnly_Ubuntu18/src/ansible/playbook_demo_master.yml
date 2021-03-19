@@ -33,7 +33,8 @@
 #####################################################
 
 - name: "Play 3: Copy consumer code to VM2"
-  hosts: MyLocalVMs          # specified in the MyInventory file
+  hosts: VM2          # specified in the MyInventory file
+  remote_user: cc
   gather_facts: no           # vagrant-created VM else use the
                              # appropriate user name
   become_user: yes            # No need for sudo as we are not installing anything
