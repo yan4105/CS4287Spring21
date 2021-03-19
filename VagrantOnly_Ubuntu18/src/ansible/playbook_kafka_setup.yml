@@ -28,7 +28,5 @@
       raw: mkdir -p /home/cc/kafka
     - name: 'umcompress tgz file'
       raw: stat /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
-           
+
 ...
-
-
