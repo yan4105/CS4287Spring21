@@ -26,23 +26,21 @@
 # detailed explanation
 #
 
+
+
 #####################################################
-### Play 1: Get facts from all our VMs
-#
-# Here I show the use of include_tasks from child playbooks
+### Play 1: Create cloud VMs
 #####################################################
 - name: "Play 1: Perform fact gathering on all VMs"
   hosts: MyLocalVMs          # specified in the MyInventory file
-  remote_user:  ubuntu       # note that the user is ubuntu for 
+  remote_user:  ubuntu       # note that the user is ubuntu for
                              # vagrant-created VM else use the
                              # appropriate user name
 
-  gather_facts: yes          # We ask Ansible to collect all facts
   become_user: no            # No need for sudo as we are not installing anything
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: tasks/playbook_get_facts_local_vm.yml
-  - include_tasks: tasks/playbook_get_facts_cloud_vm.yml
+  - include_tasks: tasks/playbook_create_cloud_vms.yml
 
 #####################################################
 ### Play 2: first perform all the actions for the local VM
@@ -73,7 +71,7 @@
 ###########################################
 # If we define the hosts param here, then we cannot define it
 # again in the playbook that we include or import because there will
-# be a conflict. 
+# be a conflict.
 - name: "Play 3: Master file performing several actions on cloud VMs"
   hosts: MyChameleonVMs       # specified in the MyInventory file
   remote_user:  cc       # change this user to what it is for the cloud
@@ -91,4 +89,3 @@
   - import_tasks: tasks/playbook_remove_app_from_cloud_vm.yml
   - import_tasks: tasks/playbook_exec_app_on_cloud_vm.yml
 ...
-
