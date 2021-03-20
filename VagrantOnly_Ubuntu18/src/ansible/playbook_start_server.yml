@@ -4,19 +4,24 @@
     chdir: /tmp/
     cmd: rm -rf kafka-logs/ zookeeper/
 - name: Start Zookeeper
-  async: 60
+  async: 3600
   poll: 0
   command:
     chdir: /home/cc/kafka/
     cmd: bin/zookeeper-server-start.sh config/zookeeper.properties
 - name: Start Kafka
-  async: 60
+  async: 3600
   poll: 0
   command:
     chdir: /home/cc/kafka/
     cmd: bin/kafka-server-start.sh config/server.properties
+- name: Wait
+  wait_for:
+    timeout: 10
 - name: Start consumer
   command:
     chdir: /home/cc/src/
     cmd: python3 consumer.py
+  register: out
+- debug: var=out.stdout_lines
 ...
