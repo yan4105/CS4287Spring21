@@ -1,0 +1,103 @@
+--- 
+ 
+- name: update apt
+  raw: yes | sudo apt update
+- name: install dependencies (0)
+  raw: yes | sudo apt-get install -y build-essential
+- name: enable couchdb repository (to get dependencies)
+  raw: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -
+- name: enable couchdb repository (to get dependencies)
+  raw: echo "deb https://apache.bintray.com/couchdb-deb bionic main" | sudo tee -a /etc/apt/sources.list
+- name: enable erlang repository
+  raw: curl -L https://packages.erlang-solutions.com/ubuntu/erlang_solutions.asc | sudo apt-key add -
+- name: enable erlang repository
+  raw: echo "deb https://packages.erlang-solutions.com/ubuntu bionic contrib" | sudo tee /etc/apt/sources.list.d/rabbitmq.list
+- name: update apt
+  raw: yes | sudo apt update
+- name: sudo apt install erlang
+  raw: yes | sudo apt install erlang
+
+- name: install dependencies (2)
+  raw: yes | sudo apt-get install -y erlang-base erlang-dev erlang-nox # erlang-unit
+- name: install dependencies (3)
+  raw: yes | sudo apt-get install -y libmozjs185-dev libicu-dev libcurl4-gnutls-dev libtool
+
+- name: mkdir /usr/local/src and chmod 777
+  raw: sudo mkdir -p /usr/local/src && sudo chmod 777 /usr/local/src
+
+- name: download couchdb.tar.gz
+  raw: stat /usr/local/src/couchdb.tar.gz || curl https://apache.claz.org/couchdb/source/3.1.1/apache-couchdb-3.1.1.tar.gz -o /usr/local/src/couchdb.tar.gz
+
+- name: mkdir /usr/local/src/couchdb
+  raw: sudo mkdir -p /usr/local/src/couchdb || sudo chmod 777 /usr/local/src/couchdb
+
+- name: uncompress couchdb.tar.gz
+  raw: stat /usr/local/src/couchdb/LICENSE || sudo tar xvzf /usr/local/src/couchdb.tar.gz --strip-components 1 -C /usr/local/src/couchdb
+
+- name: change /couchdb/rel writtability
+  raw: sudo chmod 777 /usr/local/src/couchdb/rel
+
+- name: copy couchdb.config to cloud
+  copy:
+          src: /src/couchdb/couchdb.config
+          dest: /usr/local/src/couchdb/rel
+
+- name: configure couchdb
+  ansible.builtin.shell:
+          chdir: /usr/local/src/couchdb
+          cmd: ./configure 
+
+- name: make couchdb
+  ansible.builtin.shell:
+          chdir: /usr/local/src/couchdb
+          cmd: sudo make
+
+- name: make install couchdb
+  ansible.builtin.shell:
+          chdir: /usr/local/src/couchdb
+          cmd: sudo make install
+
+
+- name: rmdir /opt/couchdb if exists
+  raw: sudo rm -rf /opt/couchdb 
+
+- name: mkdir /opt/couchdb
+  raw: sudo mkdir -p /opt/couchdb
+
+- name: copy couchdb to /opt/couchdb
+  raw: sudo rsync -r /usr/local/src/couchdb/rel/couchdb/ /opt/couchdb/
+
+- name: mkdir /opt/couchdb/etc
+  raw: sudo mkdir -p /opt/couchdb/etc
+
+- name: chmod /opt/couchdb/etc
+  raw: sudo chmod 777 /opt/couchdb/etc
+
+- name: make a copy of original local.ini 
+  raw: sudo cp -r /opt/couchdb/etc/local.ini /opt/couchdb/etc/local_orig.ini
+
+  #- name: rm local.ini
+  #  raw: sudo rm /opt/couchdb/etc/local.ini
+
+  #- name: copy local.ini to cloud
+  #copy:
+  #        src: /src/couchdb/local.ini
+  #        dest: /opt/couchdb/etc/local.ini
+
+- name: create copy of /opt/couchdb/etc/local.ini if not exists
+  raw: stat /opt/couchdb/etc/local_orig.ini || sudo cp -a /opt/couchdb/etc/local.ini /opt/couchdb/etc/local_orig.ini
+
+- name: restore copy of /opt/coudh/etc/local.ini
+  raw: sudo cp -r /opt/couchdb/etc/local_orig.ini /opt/couchdb/etc/local.ini
+
+- name: chmod local.ini
+  raw: sudo chmod 777 /opt/couchdb/etc/local.ini
+
+- name: add admin account
+  raw: sudo echo 'admin=admin' >> /opt/couchdb/etc/local.ini
+
+- name: start couchdb
+  raw: sudo /opt/couchdb/bin/couchdb -d
+
+
+

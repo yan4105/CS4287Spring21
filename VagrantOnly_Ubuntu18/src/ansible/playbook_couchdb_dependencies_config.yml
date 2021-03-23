@@ -1,0 +1,37 @@
+---
+
+- name: make downloads folder if not exist
+  raw: sudo mkdir -p /home/cc/Downloads
+
+- name: install dependencies for erlang
+  raw: sudo apt-get install -y libncurses5-dev libncursesw5-dev # openssl libssl-dev rebar
+
+- name: sudo apt install erlang
+  raw: yes | sudo apt-get install erlang
+
+- name: wget erlang
+  raw: stat /home/cc/Downloads/otp_src.tar.gz || curl http://erlang.org/download/otp_src_22.0.tar.gz -o /home/cc/Downloads/otp_src.tar.gz
+
+- name: mkdir -p /home/cc/Downloads/otp_src
+  raw: mkdir -p /home/cc/Downloads/otp_src
+
+- name: uncompress erlang
+  ansible.builtin.shell: 
+        chdir: /home/cc/Downloads 
+        cmd: stat /home/cc/Downloads/otp_src/LICENSE.txt || tar -xvzf otp_src.tar.gz -C /home/cc/Downloads/otp_src --strip 1
+
+- name: configure erlang
+  ansible.builtin.shell: 
+        chdir: /home/cc/Downloads/otp_src 
+        cmd: ./configure
+
+- name: install erlang - sudo make
+  ansible.builtin.command:
+        chdir: /home/cc/Downloads/otp_src 
+        cmd: sudo make 
+
+- name: install erlang - sudo make install
+  ansible.builtin.command: 
+        chdir: /home/cc/Downloads/otp_src 
+        cmd: sudo make install
+ 

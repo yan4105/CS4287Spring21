@@ -5,25 +5,12 @@
 ### Play 1: Create cloud VMs
 #####################################################
 
-#- name: Play 1 Create cloud VMs
-#  hosts: MyLocalVMs
-#  remote_user: cc
+- name: Play 1 Create cloud VMs
+  hosts: MyLocalVMs
+  remote_user: parallels
 
-#  tasks:
-#  - include_tasks: playbook_create_cloud_vms.yml
-
-
-#####################################################
-### Play 5: Install CouchDB
-#####################################################
-
-#- name: Play 5 Install CouchDB
-#  gather_facts: no
-#  hosts: MyChameleonVMs 
-#  remote_user: cc
-
-#  tasks:
-#  - include_tasks: playbook_couchdb_setup.yml
+  tasks:
+  - include_tasks: playbook_create_cloud_vms.yml
 
 
 
@@ -46,8 +33,7 @@
 #####################################################
 
 - name: "Play 3: Copy consumer code to VM2"
-  hosts: VM2          # specified in the MyInventory file
-  remote_user: cc
+  hosts: MyLocalVMs          # specified in the MyInventory file
   gather_facts: no           # vagrant-created VM else use the
                              # appropriate user name
   become_user: yes            # No need for sudo as we are not installing anything
@@ -72,5 +58,17 @@
 
   tasks:
   - include_tasks: playbook_start_server.yml
+
+#####################################################
+### Play 4: Install CouchDB
+#####################################################
+
+- name: Play 1 Create cloud VMs
+  gather_facts: no
+  hosts: MyLocalVMs
+  remote_user: parallels
+
+  tasks:
+  - include_tasks: playbook_couchdb_setup.yml
 
 ...
