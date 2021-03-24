@@ -1,5 +1,5 @@
---- 
- 
+---
+
 - name: update apt
   raw: yes | sudo apt update
 - name: install dependencies (0)
@@ -45,7 +45,7 @@
 - name: configure couchdb
   ansible.builtin.shell:
           chdir: /usr/local/src/couchdb
-          cmd: ./configure 
+          cmd: ./configure
 
 - name: make couchdb
   ansible.builtin.shell:
@@ -59,7 +59,7 @@
 
 
 - name: rmdir /opt/couchdb if exists
-  raw: sudo rm -rf /opt/couchdb 
+  raw: sudo rm -rf /opt/couchdb
 
 - name: mkdir /opt/couchdb
   raw: sudo mkdir -p /opt/couchdb
@@ -73,7 +73,7 @@
 - name: chmod /opt/couchdb/etc
   raw: sudo chmod 777 /opt/couchdb/etc
 
-- name: make a copy of original local.ini 
+- name: make a copy of original local.ini
   raw: sudo cp -r /opt/couchdb/etc/local.ini /opt/couchdb/etc/local_orig.ini
 
   #- name: rm local.ini
@@ -99,5 +99,5 @@
 - name: start couchdb
   raw: sudo /opt/couchdb/bin/couchdb -d
 
-
-
+- name: 'allow ufw rules for 5984'
+  raw: sudo ufw allow 5984

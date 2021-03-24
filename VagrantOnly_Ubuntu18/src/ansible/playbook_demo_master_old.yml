@@ -63,7 +63,7 @@
 ### Play 4: Install CouchDB
 #####################################################
 
-- name: Play 1 Create cloud VMs
+- name: Play 5 Install CouchDB
   gather_facts: no
   hosts: MyLocalVMs
   remote_user: parallels
