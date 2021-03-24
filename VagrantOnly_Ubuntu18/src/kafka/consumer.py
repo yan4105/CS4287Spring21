@@ -14,17 +14,18 @@
 import sys
 import os  # need this for popen
 import time  # for sleep
-from kafka import KafkaConsumer  # consumer of events
+from kafka import KafkaConsumer
 
-# We can make this more sophisticated/elegant but for now it is just
-# hardcoded to the setup I have on my local VMs
+from cloudant.client import CouchDB
 
-# acquire the consumer
-# (you will need to change this to your bootstrap server's IP addr)
+couch = CouchDB("admin", "admin", url='http://129.114.25.202:5984', connect=True)
 consumer = KafkaConsumer(bootstrap_servers="localhost:9092")
 
 # subscribe to topic
 consumer.subscribe(topics=["utilizations"])
+
+if db not in couch:
+    couch.create_database("db")
 
 # we keep reading and printing
 for msg in consumer:
@@ -32,6 +33,8 @@ for msg in consumer:
     
     if formatted == "Q":
     	break
+
+    couch["db"].create_document({"value": formatted})
 
     # convert the value field into string (ASCII)
     print(formatted)

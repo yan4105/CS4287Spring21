@@ -1,12 +1,12 @@
 ---
-- name: 'create downloads foler'
+- name: 'create downloads folder'
   raw: mkdir -p /home/cc/Downloads
-- name: 'curl download kafka binary file is not already exists'
-  raw: stat /home/cc/Downloads/kafka.tgz || curl "https://apache.claz.org/kafka/2.7.0/kafka_2.12-2.7.0.tgz" -o /home/cc/Downloads/kafka.tgz
+- name: 'curl download kafka binary file if not already exists'
+  raw: test -f /home/cc/Downloads/kafka.tgz || curl "https://apache.claz.org/kafka/2.7.0/kafka_2.12-2.7.0.tgz" -o /home/cc/Downloads/kafka.tgz
 - name: 'mkdir kafka'
   raw: mkdir -p /home/cc/kafka
 - name: 'umcompress tgz file'
-  raw: stat /home/cc/kafka/ || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
+  raw: test -f /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
 - name: 'remove server.properties'
   raw: sudo rm /home/cc/kafka/config/server.properties || true
 - name: 'chmod config'

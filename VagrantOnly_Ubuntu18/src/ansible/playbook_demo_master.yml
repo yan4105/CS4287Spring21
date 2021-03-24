@@ -13,19 +13,6 @@
 #  - include_tasks: playbook_create_cloud_vms.yml
 
 
-#####################################################
-### Play 5: Install CouchDB
-#####################################################
-
-#- name: Play 5 Install CouchDB
-#  gather_facts: no
-#  hosts: MyChameleonVMs 
-#  remote_user: cc
-
-#  tasks:
-#  - include_tasks: playbook_couchdb_setup.yml
-
-
 
 #####################################################
 ### Play 2: Setup kafka
@@ -38,7 +25,6 @@
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
   - include_tasks: playbook_kafka_setup.yml
-
 
 
 #####################################################
@@ -56,13 +42,23 @@
   - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
 
 
+#####################################################
+### Play 4: Install CouchDB
+#####################################################
+
+- name: Play 4 Install CouchDB
+  gather_facts: no
+  hosts: MyChameleonVMs 
+  remote_user: cc
+
+  tasks:
+  - include_tasks: playbook_couchdb_setup.yml
 
 ###########################################
-# Play 3: Now perform some activities on our cloud VMs time while include_ will give error
-# only while running the play
+# Play 5: Now start zookeeper kafka and consumer
 ###########################################
 
-- name: "Play 4: Start Zookeeper, Kafka, and consumer"
+- name: "Play 5: Start Zookeeper, Kafka, and consumer"
   gather_facts: no
   hosts: VM2
   remote_user: cc
@@ -72,5 +68,6 @@
 
   tasks:
   - include_tasks: playbook_start_server.yml
+
 
 ...
