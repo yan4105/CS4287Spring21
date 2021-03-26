@@ -1,4 +1,6 @@
 ---
+- name: install cloudant
+  shell: pip3 install cloudant
 - name: Delete temp files
   command:
     chdir: /tmp/

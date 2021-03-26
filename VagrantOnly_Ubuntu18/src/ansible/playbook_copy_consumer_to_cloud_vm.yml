@@ -16,5 +16,9 @@
   copy:
       src: ../kafka/consumer.py   # here you can give absolute path also.
       dest: /home/cc/src    # destination directory into which this file will get copied.
+- name: Copy producer to VM2
+  copy:
+          src: ../kafka/producer.py
+          dest: /home/cc/src
                                       # if you want to name it differently, give the file name also.
 ...

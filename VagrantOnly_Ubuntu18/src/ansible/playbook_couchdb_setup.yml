@@ -43,6 +43,7 @@
 #          dest: /usr/local/src/couchdb/rel
 
 - name: configure couchdb
+  become: true
   shell:
           chdir: /usr/local/src/couchdb
           cmd: ./configure
@@ -85,6 +86,15 @@
 - name: restore copy of /opt/coudh/etc/local.ini
   raw: sudo cp -r /opt/couchdb/etc/local_orig.ini /opt/couchdb/etc/local.ini
 
+- name: remove local.ini
+  raw: sudo rm /opt/couchdb/etc/local.ini
+
+- name: copy local local.ini over
+  become: true
+  copy:
+          src: /src/couchdb/local.ini 
+          dest: /opt/couchdb/etc/local.ini 
+
 - name: chmod local.ini
   raw: sudo chmod 777 /opt/couchdb/etc/local.ini
 
@@ -99,6 +109,10 @@
   poll: 0
   command:
    cmd: sudo /opt/couchdb/bin/couchdb -d
+
+   #- name: create _users db to silence warning
+   #  command:
+   #    cmd: curl -X PUT http://admin:admin@localhost:5984/_users
 
 - name: install cloudant
   shell: pip3 install cloudant
