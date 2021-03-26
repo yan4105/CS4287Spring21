@@ -24,7 +24,7 @@ consumer = KafkaConsumer(bootstrap_servers="localhost:9092")
 # subscribe to topic
 consumer.subscribe(topics=["utilizations"])
 
-if db not in couch:
+if "db" not in couch:
     couch.create_database("db")
 
 # we keep reading and printing
