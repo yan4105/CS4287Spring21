@@ -65,6 +65,15 @@
 
   tasks:
   - include_tasks: playbook_start_server.yml
+ 
+ 
+- name: "Play 6: Delete Cloud VMs"
+  gather_facts: no
+  hosts: MyLocalVMs
+  remote_user: parallels
+
+  tasks:
+  - include_tasks: playbook_delete_cloud_vms.yml
 
 
 ...
