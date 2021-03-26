@@ -43,7 +43,19 @@
 
 
 #####################################################
-### Play 4: Install CouchDB
+### Play 4.1: Install CouchDB Dependencies
+#####################################################
+
+- name: Play 4.1 Install CouchDB
+  gather_facts: no
+  hosts: MyChameleonVMs
+  remote_user: cc
+
+  tasks:
+  - include_tasks: playbook_couchdb_dependencies_config.yml
+
+#####################################################
+### Play 4.2: Install CouchDB
 #####################################################
 
 - name: Play 4 Install CouchDB

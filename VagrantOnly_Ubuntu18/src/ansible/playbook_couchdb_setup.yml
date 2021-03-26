@@ -97,7 +97,10 @@
   raw: sudo echo 'admin=admin' >> /opt/couchdb/etc/local.ini
 
 - name: start couchdb
-  raw: sudo /opt/couchdb/bin/couchdb -d
+  async: 3600
+  poll: 0
+  command:
+   cmd: sudo /opt/couchdb/bin/couchdb -d
 
 - name: install cloudant
   shell: pip3 install cloudant
