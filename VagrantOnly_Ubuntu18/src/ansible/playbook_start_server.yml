@@ -6,12 +6,24 @@
   command:
     chdir: /tmp/
     cmd: rm -rf kafka-logs/ zookeeper/
+- name: Stop Zookeeper
+  async: 3600
+  poll: 0
+  command:
+    chdir: /home/cc/kafka/
+    cmd: bin/zookeeper-server.stop.sh
 - name: Start Zookeeper
   async: 3600
   poll: 0
   command:
     chdir: /home/cc/kafka/
     cmd: bin/zookeeper-server-start.sh config/zookeeper.properties
+- name: Stop Kafka
+  async: 3600
+  poll: 0
+  command:
+    chdir: /home/cc/kafka
+    cmd: bin/kafka-server-stop.sh
 - name: Start Kafka
   async: 3600
   poll: 0

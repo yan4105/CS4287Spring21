@@ -44,7 +44,13 @@
 # 129.114.25.176 ansible_connection=ssh ansible_ssh_private_key_file=/home/gokhale/.ssh/gokhale_chameleoncloud.pem
 # 129.114.27.100 ansible_connection=ssh ansible_ssh_private_key_file=/home/gokhale/.ssh/gokhale_chameleoncloud.pem
 129.114.25.202 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/id_ed25519
+129.114.25.83 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/id_ed25519
 
+[VM2]
+129.114.25.83 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/id_ed25519
+
+[VM3]
+129.114.25.202 ansible_connection=ssh ansible_ssh_private_key_file=/home/vagrant/.ssh/id_ed25519
 # If I have VMs on other cloud platforms, I can have more aliases
 #[MyAWSVMs]
 #

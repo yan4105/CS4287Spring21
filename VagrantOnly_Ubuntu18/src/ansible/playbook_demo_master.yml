@@ -10,8 +10,8 @@
   remote_user: parallels
 
   tasks:
- # - include_tasks: playbook_delete_cloud_vms.yml
-  - include_tasks: playbook_create_cloud_vms.yml
+   - include_tasks: playbook_delete_cloud_vms.yml
+   - include_tasks: playbook_create_cloud_vms.yml
 
 
 
@@ -25,7 +25,7 @@
   remote_user:  cc        # remote user is cc but change as appropriate
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: playbook_kafka_setup.yml
+   - include_tasks: playbook_kafka_setup.yml
 
 
 #####################################################
@@ -39,7 +39,7 @@
                              # appropriate user name
 
   tasks:    # the task to be performed (here I am showing the effect of include_)
-  - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
+   - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
 
 
 - name: "Play 4: Install CouchDB"
@@ -49,7 +49,7 @@
   become: yes
 
   tasks:
-  - include_tasks: playbook_couchdb_setup.yml
+    - include_tasks: playbook_couchdb_setup.yml
 
 ###########################################
 # Play 5: Now start zookeeper kafka and consumer
@@ -67,13 +67,13 @@
   - include_tasks: playbook_start_server.yml
  
  
-- name: "Play 6: Delete Cloud VMs"
-  gather_facts: no
-  hosts: MyLocalVMs
-  remote_user: parallels
+    #- name: "Play 6: Delete Cloud VMs"
+    #  gather_facts: no
+    #  hosts: MyLocalVMs
+    #  remote_user: parallels
 
-  tasks:
-  - include_tasks: playbook_delete_cloud_vms.yml
+#  tasks:
+#    - include_tasks: playbook_delete_cloud_vms.yml
 
 
 ...

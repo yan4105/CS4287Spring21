@@ -10,7 +10,7 @@
     name: xu.vm3
     key_name: pub
     availability_zone: nova
-    flavor: m1.small
+    flavor: m1.medium
     state: present
     network: CH-819381-net
     floating_ips: 129.114.25.202
