@@ -1,0 +1,9 @@
+---
+
+- name: make downloads folder if not exist
+  raw: sudo mkdir -p /home/cc/Downloads
+
+- name: install stuff
+  shell: sudo apt-get --no-install-recommends -y install build-essential pkg-config erlang libicu-dev libmozjs185-dev libcurl4-openssl-dev
+
+...

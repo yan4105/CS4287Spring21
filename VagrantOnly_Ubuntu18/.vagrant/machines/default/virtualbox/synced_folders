@@ -1,0 +1,1 @@
+{"virtualbox":{"/src":{"guestpath":"/src","hostpath":"/home/yan/Documents/Personal/2021Spring/CS4287/finished/VagrantOnly_Ubuntu18/src","disabled":false,"__vagrantfile":true},"/vagrant":{"guestpath":"/vagrant","hostpath":"/home/yan/Documents/Personal/2021Spring/CS4287/finished/VagrantOnly_Ubuntu18","disabled":false,"__vagrantfile":true}}}

@@ -1,0 +1,11 @@
+---
+- name: 'create downloads foler'
+  raw: sudo mkdir -p /home/cc/Downloads
+- name: 'download couchdb GPG key'
+  raw: curl -L https://couchdb.apache.org/repo/bintray-pubkey.asc | sudo apt-key add -
+- name: 'add CouchDB repo'
+  raw: echo "deb https://apache.bintray.com/couchdb-deb bionic main" | sudo tee -a /etc/apt/sources.list
+- name: 'apt update'
+  raw: yes | sudo apt update
+- name: 'install couchdb'
+  raw: sudo apt install -y couchdb

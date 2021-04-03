@@ -1,0 +1,28 @@
+---
+- name: 'create downloads folder'
+  raw: mkdir -p /home/cc/Downloads
+- name: 'curl download kafka binary file if not already exists'
+  raw: test -f /home/cc/Downloads/kafka.tgz || curl "https://apache.claz.org/kafka/2.7.0/kafka_2.12-2.7.0.tgz" -o /home/cc/Downloads/kafka.tgz
+- name: 'mkdir kafka'
+  raw: mkdir -p /home/cc/kafka
+- name: 'umcompress tgz file'
+  raw: test -f /home/cc/kafka/LICENSE || tar -xvzf /home/cc/Downloads/kafka.tgz -C /home/cc/kafka --strip 1
+- name: 'remove server.properties'
+  raw: sudo rm /home/cc/kafka/config/server.properties || true
+- name: 'chmod config'
+  raw: sudo chmod -R 777 /home/cc/kafka/
+- name: 'copy kafka config to config folder'
+  copy:
+    src: server.properties
+    dest: /home/cc/kafka/config/server.properties
+- name: 'update apt'
+  raw: yes | sudo apt update
+- name: 'install java'
+  raw: yes | sudo apt install default-jre
+- name: 'install kafka for python'
+  raw: pip3 install kafka-python
+- name: 'allow ufw rules for 9092'
+  raw: sudo ufw allow 9092
+- name: 'allow ufw rules for 2181'
+  raw: sudo ufw allow 2181
+...

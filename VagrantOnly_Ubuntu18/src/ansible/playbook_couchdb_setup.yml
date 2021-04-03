@@ -1,0 +1,38 @@
+---
+- name: enable repository
+  shell: sudo apt-get install -y gnupg ca-certificates
+  shell: echo "deb https://apache.bintray.com/couchdb-deb bionic main" | sudo tee /etc/apt/sources.list.d/couchdb.list
+
+- name: repo keys
+  shell: sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 8756C4F765C9AC3CB6B85D62379CE192D401AB61
+
+- name: update apt
+  shell: sudo apt-get update -y
+- name: install dependencies
+  shell: sudo apt-get install -y build-essential
+
+- name: install stuff
+  shell: sudo apt-get --no-install-recommends -y install build-essential pkg-config erlang libicu-dev libcurl4-openssl-dev
+
+- name: debconf
+  shell: |
+    COUCHDB_PASSWORD=admin
+    echo "couchdb couchdb/mode select standalone" | sudo debconf-set-selections
+    echo "couchdb couchdb/mode seen true" | sudo debconf-set-selections
+    echo "couchdb couchdb/bindaddress string 0.0.0.0" | sudo debconf-set-selections
+    echo "couchdb couchdb/bindaddress seen true" | sudo debconf-set-selections
+    echo "couchdb couchdb/adminpass password ${COUCHDB_PASSWORD}" | sudo debconf-set-selections
+    echo "couchdb couchdb/adminpass seen true" | sudo debconf-set-selections
+    echo "couchdb couchdb/adminpass_again password ${COUCHDB_PASSWORD}" | sudo debconf-set-selections
+    echo "couchdb couchdb/adminpass_again seen true" | sudo debconf-set-selections
+
+- name: install couchdb
+  shell: DEBIAN_FRONTEND=noninteractive sudo apt-get install -y --force-yes couchdb
+
+- name: configure couchdb
+  shell: curl -X PUT http://admin:admin@localhost:5984/_node/_local/_config/chttpd/bind_address -d '"0.0.0.0"'
+
+- name: 'allow ufw rules for 5984'
+  shell: sudo ufw allow 5984
+
+...

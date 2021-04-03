@@ -1,0 +1,20 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2016
+# Modified: Fall 2020  to include new approach
+#
+# This playbook will copy a file from local to remote machine.
+# Our cloud can be Horizon Cloud or Chameleon or AWS etc
+# See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+- name: Make /home/cc/src dir if not exist
+  raw: sudo mkdir -p /home/cc/src
+- name: chmod 777 /home/cc/src
+  raw: sudo chmod 777 /home/cc/src
+- name: Copy a file from local to remote
+  copy:
+      src: ../kafka/consumer.py   # here you can give absolute path also.
+      dest: /home/cc/src    # destination directory into which this file will get copied.
+                                      # if you want to name it differently, give the file name also.
+...

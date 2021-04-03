@@ -1,0 +1,16 @@
+---
+- name: Delete VM 2
+  os_server:
+    name: xu.vm2
+    state: absent
+
+- name: Delete VM 3
+  os_server:
+    name: xu.vm3
+    state: absent
+
+- name: Wait
+  wait_for:
+    timeout: 10
+
+...
