@@ -1,0 +1,25 @@
+---
+
+- name: "copy local files over (1)"
+  ansible.builtin.copy:
+    src: ../docker/docker-compose.yml
+    dest: /home/cc/docker-compose.yml
+
+- name: "copy local files over (2)"
+  ansible.builtin.copy:
+    src: ../kafka/consumer.py
+    dest: /home/cc/consumer.py
+
+- name: "install docker-compose"
+  raw: python3.6 -m pip install docker-compose
+
+- name: "remove old docker-compose"
+  raw: sudo rm /usr/bin/docker-compose > /dev/null
+
+- name: "symlink"
+  raw: sudo ln -s /home/cc/.local/bin/docker-compose /usr/bin/docker-compose
+
+- name: "run docker-compose.yml"
+  raw: sudo docker-compose -f docker-compose.yml up -d
+
+...

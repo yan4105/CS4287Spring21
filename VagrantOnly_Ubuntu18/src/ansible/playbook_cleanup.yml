@@ -1,0 +1,9 @@
+---
+
+- name: "delete existing join.sh"
+  raw: sudo test -f /join.sh | sudo touch /join.sh
+
+- name: "delete existing join.sh"
+  raw: sudo rm /join.sh
+
+...

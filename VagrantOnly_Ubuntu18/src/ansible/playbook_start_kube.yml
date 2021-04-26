@@ -1,0 +1,43 @@
+---
+
+- name: "reset previous kube"
+  raw: sudo kubeadm reset -f
+
+- name: "kubeadm init on VM3"
+  raw: yes | sudo kubeadm init --ignore-preflight-errors=NumCPU --pod-network-cidr 192.168.0.0/16
+
+- name: "config (1)"
+  raw: mkdir -p $HOME/.kube 
+
+- name: "config (2)"
+  raw: sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config
+
+- name: "config (3)"
+  raw: sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: "apply calico"
+  raw: sudo kubectl apply -f https://docs.projectcalico.org/v3.18/manifests/calico.yaml
+ 
+- name: "save join command (1)"
+  raw: sudo test -f join.sh | sudo touch join.sh
+
+- name: "save join command (2)"
+  raw: sudo rm join.sh
+
+- name: "save join command (3)"
+  raw: sudo touch join.sh
+
+- name: "save join command (4)"
+  raw: sudo chmod 777 join.sh
+
+- name: "save join command (5)"
+  raw: sudo kubeadm token create --print-join-command >> join.sh
+
+- name: "save join command to local"
+  ansible.builtin.fetch:
+    src: join.sh
+    dest: /join.sh
+    flat: yes
+
+
+...

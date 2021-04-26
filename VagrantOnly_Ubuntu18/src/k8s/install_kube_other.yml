@@ -1,0 +1,80 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2020
+# Modified: Fall 2020  to use new approach
+#
+# This playbook will execute a command on the remote machine
+# Horizon Cloud VM or Chameleon VMs or AWS VMs
+# See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+#- hosts: MyChameleonVMs
+#  remote_user:  cc   # change the user to whatever is the user on the cloud VM
+#  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+#    - openstack.cloud
+
+  # here we use the command module. There is also the shell module to do similar
+  # outcome especially when you want to run a shell script, and there are more
+  # complex arguments including executing in specific directories.
+  #  tasks:
+- name: Delete the list
+  shell: rm -fr /etc/apt/sources.list.d/kubernetes.list
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Update the directory
+  shell: apt-get update
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Fetch the needed package for https
+  shell: apt install -y gnupg2 curl --allow-change-held-packages
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+
+- name: Update the sourcelist
+  shell: echo "deb https://apt.kubernetes.io/kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Change the signature
+  shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 6A030B21BA07F4FB
+  become: yes
+  args:
+    chdir: ~
+
+- name: Change the signature
+  shell: apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 8B57C5C2836F4BEB
+  become: yes
+  args:
+    chdir: ~
+
+- name: Update the directory
+  shell: apt update
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Download the kube module
+  shell: apt install kubeadm kubelet kubectl kubernetes-cni -y --allow-change-held-packages
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Print the output
+  debug:
+    msg: "{{ output }}"
+
+...
+

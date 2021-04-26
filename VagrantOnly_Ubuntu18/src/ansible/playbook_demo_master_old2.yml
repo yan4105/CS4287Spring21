@@ -1,0 +1,85 @@
+---
+
+
+#####################################################
+### Play 1: Create cloud VMs
+#####################################################
+
+#- name: Play 1 Create cloud VMs
+#  hosts: MyLocalVMs
+#  remote_user: cc
+
+#  tasks:
+#  - include_tasks: playbook_create_cloud_vms.yml
+
+
+
+#####################################################
+### Play 2: Setup kafka
+#####################################################
+
+- name: "Play 2: Setup kafka"
+  gather_facts: no
+  hosts: MyChameleonVMs       # my list of VMs on chosen cloud
+  remote_user:  cc        # remote user is cc but change as appropriate
+
+  tasks:    # the task to be performed (here I am showing the effect of include_)
+  - include_tasks: playbook_kafka_setup.yml
+
+
+#####################################################
+### Play 3: Copy consumer.py to VM2
+#####################################################
+
+- name: "Play 3: Copy consumer code to VM2"
+  hosts: VM2           # specified in the MyInventory file
+  remote_user: cc
+  gather_facts: no           # vagrant-created VM else use the
+                             # appropriate user name
+  become: yes
+
+  tasks:    # the task to be performed (here I am showing the effect of include_)
+  - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
+
+
+#####################################################
+### Play 4.1: Install CouchDB Dependencies
+#####################################################
+
+- name: Play 4.1 Install CouchDB
+  gather_facts: no
+  hosts: VM3
+  remote_user: cc
+
+  tasks:
+  - include_tasks: playbook_couchdb_dependencies_config.yml
+
+#####################################################
+### Play 4.2: Install CouchDB
+#####################################################
+
+- name: Play 4 Install CouchDB
+  gather_facts: no
+  hosts: VM3 
+  remote_user: cc
+
+  tasks:
+  - include_tasks: playbook_couchdb_setup.yml
+
+###########################################
+# Play 5: Now start zookeeper kafka and consumer
+###########################################
+
+- name: "Play 5: Start Zookeeper, Kafka, and consumer"
+  gather_facts: no
+  hosts: VM2
+  remote_user: cc
+  strategy: debug        # start a debugger on error
+  collections:               # import the plugin
+  - openstack.cloud
+
+  tasks:
+  - include_tasks: playbook_start_server.yml
+
+
+...

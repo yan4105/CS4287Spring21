@@ -20,7 +20,7 @@
 - name: 'install java'
   raw: yes | sudo apt install default-jre
 - name: 'install kafka for python'
-  raw: pip3 install kafka-python
+  raw: python3.6 -m pip install kafka-python
 - name: 'allow ufw rules for 9092'
   raw: sudo ufw allow 9092
 - name: 'allow ufw rules for 2181'

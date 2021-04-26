@@ -1,0 +1,37 @@
+---
+- name: "add the required repository for kubeadm (1)"
+  raw: yes | sudo apt-get update
+
+- name: "add the required repository for kubeadm (2)"
+  raw: sudo apt-get install -y apt-transport-https curl
+
+- name: "add the required repository for kubeadm (3)"
+  raw: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+- name: "create kubernetes.list"
+  raw: sudo test -f /etc/apt/sources.list.d/kubernetes.list | sudo touch /etc/apt/sources.list.d/kubernetes.list
+
+- name: "add the required repository for kubeadm (4)"
+  raw: sudo chmod +777 /etc/apt/sources.list.d/kubernetes.list
+
+- name: "add the required repository for kubeadm (5)"
+  raw: sudo echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" >> /etc/apt/sources.list.d/kubernetes.list
+
+- name: "add the required repository for kubeadm (6)"
+  raw: sudo chmod 644 /etc/apt/sources.list.d/kubernetes.list
+
+- name: "update the repository"
+  raw: yes | sudo apt-get update
+
+- name: "installing kubelet, kubeadm and kubectl"
+  raw: sudo apt-get install -y kubelet kubeadm kubectl
+
+- name: "setting apt-mark"
+  raw: sudo apt-mark hold kubelet kubeadm kubectl
+
+#- name: "restart kubelet (1)"
+#  raw: sudo systemctl daemon-reload
+
+#- name: "restart kubelet (2)"
+#  raw: sudo systemctl restart kubelet
+...

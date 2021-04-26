@@ -1,0 +1,27 @@
+---
+
+- name: "add host name"
+  raw: echo $(hostname -I | cut -d\  -f1) $(hostname) | sudo tee -a /etc/hosts
+ 
+- name: "apt update"
+  raw: sudo apt-get update
+
+- name: "deadsnakes"
+  raw: sudo add-apt-repository ppa:deadsnakes/ppa -y
+
+- name: "apt update"
+  raw: sudo apt-get update
+
+- name: "install python3.8"
+  raw: yes | sudo apt-get install python3.6
+
+- name: "install pip3"
+  raw: sudo apt-get install python3-pip
+
+- name: "upgrade pip"
+  raw: /usr/bin/python3.6 -m pip install --upgrade pip
+
+
+
+
+...

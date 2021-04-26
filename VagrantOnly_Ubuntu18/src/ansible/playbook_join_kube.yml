@@ -1,0 +1,30 @@
+---
+
+- name: "clean up (1)"
+  raw: sudo mkdir -p /kube_tmp
+
+- name: "clean up (2)"
+  raw: sudo rm -rf /kube_tmp
+
+- name: "clean up (3)"
+  raw: sudo mkdir /kube_tmp
+
+- name: "chmod"
+  raw: sudo chmod 777 /kube_tmp
+
+- name: "get join command"
+  ansible.builtin.copy:
+    src: /join.sh
+    dest: /kube_tmp/
+
+- name: "reset kube"
+  raw: sudo kubeadm reset -f
+
+- name: "chmod"
+  raw: sudo chmod 777 /kube_tmp/join.sh
+
+- name: "join master"
+  raw: sudo sh /kube_tmp/join.sh
+
+
+...

@@ -1,0 +1,19 @@
+---
+- name: 'update repository'
+  raw: yes | sudo apt-get update
+
+- name: "uninstall any older Docker software"
+  raw: yes | sudo apt-get remove docker docker-engine docker.io
+
+- name: "Install docker"
+  raw: yes | sudo apt install docker.io
+
+- name: "Start and automate docker to start at run time (1)"
+  raw: sudo systemctl start docker
+
+- name: "Start and automate docker to start at run time (2)"
+  raw: sudo systemctl enable docker
+
+- name: "Install docker-compose"
+  raw: yes | python3.6 -m pip install docker-compose
+...

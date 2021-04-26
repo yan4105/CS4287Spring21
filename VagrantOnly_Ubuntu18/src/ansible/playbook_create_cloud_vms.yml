@@ -1,36 +1,47 @@
 ---
-- name: remove known_hosts
-  file:
-    path: ~/.ssh/known_hosts
-    state: absent
+# create stuff
 
-- name: Launch VM 3
+- name: "Launch VM 3"
   os_server:
     image: CC-Ubuntu18.04-20201016
-    name: xu.vm3
-    key_name: pub
+    name: teamvm3
+    key_name: teamvm
     availability_zone: nova
     flavor: m1.medium
     state: present
     network: CH-819381-net
-    floating_ips: 129.114.25.202
-    security_groups: ENABLE_HTTP_HTTPS,ENABLE_SSH,ENABLE_KAFKA_COUCHDB,667273fd-a67a-4ca2-8a68-3088220e6374,7e09e9fd-4971-49bb-bd55-9aa2fa149b16
+    floating_ips: 129.114.26.127
+    security_groups: default,ENABLE_HTTP_HTTPS,ENABLE_SSH,ENABLE_KAFKA_COUCHDB
+    #,667273fd-a67a-4ca2-8a68-3088220e6374,7e09e9fd-4971-49bb-bd55-9aa2fa149b16  
 
-# create stuff
-- name: Launch VM 2
+    #- name: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.25.83"
+    #raw: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.25.83"
+
+- name: "Launch VM 2"
   os_server:
     image: CC-Ubuntu18.04-20201016
-    name: xu.vm2
-    key_name: pub
+    name: teamvm2
+    key_name: teamvm
     availability_zone: nova
     flavor: m1.small
     state: present
     network: CH-819381-net
-    floating_ips: 129.114.25.83
-    security_groups: ENABLE_HTTP_HTTPS,ENABLE_SSH,ENABLE_KAFKA_COUCHDB,667273fd-a67a-4ca2-8a68-3088220e6374,7e09e9fd-4971-49bb-bd55-9aa2fa149b16
+    floating_ips: 129.114.27.32
+    security_groups: default,ENABLE_HTTP_HTTPS,ENABLE_SSH,ENABLE_KAFKA_COUCHDB
+    #,667273fd-a67a-4ca2-8a68-3088220e6374,7e09e9fd-4971-49bb-bd55-9aa2fa149b16
+  
+- name: create known_hosts if not exists
+  become: true
+  raw: test -f "/home/vagrant/.ssh/known_hosts" || touch "/home/vagrant/.ssh/known_hosts"
 
-- name: Wait
-  wait_for:
-    timeout: 30
+- name: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.26.127"
+  raw: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.26.127"
+
+
+- name: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.27.32"
+  raw: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.27.32"
+
+
+
 
 ...

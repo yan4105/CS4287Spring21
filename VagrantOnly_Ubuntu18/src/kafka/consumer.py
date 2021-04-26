@@ -18,13 +18,13 @@ from kafka import KafkaConsumer
 
 from cloudant.client import CouchDB
 
-couch = CouchDB("admin", "admin", url='http://129.114.25.202:5984', connect=True)
+couch = CouchDB("admin", "admin", url='http://129.114.27.32:5984', connect=True)
 consumer = KafkaConsumer(bootstrap_servers="localhost:9092")
 
 # subscribe to topic
 consumer.subscribe(topics=["utilizations"])
 
-if "db" not in couch:
+if 'db' not in couch:
     couch.create_database("db")
 
 # we keep reading and printing

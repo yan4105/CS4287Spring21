@@ -1,0 +1,5 @@
+---
+
+- name: "install cloudant"
+  raw: yes | python3.6 -m pip install cloudant
+...

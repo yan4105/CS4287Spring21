@@ -1,0 +1,12 @@
+---
+
+- name: "stop my-couchdb"
+  raw: sudo docker stop my-couchdb || true
+
+- name: "rm my-couchdb"
+  raw: sudo docker rm my-couchdb || true
+
+- name: "run couchdb"
+  raw: sudo docker run -d -e COUCHDB_USER=admin -e COUCHDB_PASSWORD=admin -p 5984:5984 --name my-couchdb couchdb:3.1
+
+...

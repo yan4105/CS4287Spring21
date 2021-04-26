@@ -2,7 +2,7 @@ import os   # need this for popen
 import time # for sleep
 from kafka import KafkaProducer  # producer of events
 
-producer = KafkaProducer (bootstrap_servers="129.114.25.83:9092", 
+producer = KafkaProducer (bootstrap_servers="129.114.26.127:9092", 
                                           acks=1)  # wait for leader to write to log
 
 while True:

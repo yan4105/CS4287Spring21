@@ -1,0 +1,81 @@
+---
+#
+# EECS 4287/5287: Principles of Cloud Computing
+# Author: Aniruddha Gokhale
+# Created: Fall 2020
+# Modified: Fall 2020  to use new approach
+#
+# This playbook will execute a command on the remote machine
+# Horizon Cloud VM or Chameleon VMs or AWS VMs
+# See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/command_module.html
+# - hosts: MyChameleonVMs
+  #  remote_user:  cc   # change the user to whatever is the user on the cloud VM
+  #  collections:   # this is new starting with Ansible 2.9 (akin to importing package)
+  #    - openstack.cloud
+
+  # here we use the command module. There is also the shell module to do similar
+  # outcome especially when you want to run a shell script, and there are more
+  # complex arguments including executing in specific directories.
+  #  tasks:
+- name: Install the binary file
+  shell: curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Check sum parity
+  shell: install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Check the clinet status
+  shell: kubectl version --client
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Update the directory
+  shell: apt-get update
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Get the kubernetes engine link
+  shell: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Get the kubernetes list
+  shell: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | tee /etc/apt/sources.list.d/kubernetes.list
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Update the directory
+  shell: apt-get update
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Download kubectl package
+  shell: apt-get install -y -allow-change-held-packages kubectl
+  become: yes
+  args:
+    chdir: ~
+  register: output
+
+- name: Print the output
+  debug:
+    msg: "{{ output }}"
+
+...
+

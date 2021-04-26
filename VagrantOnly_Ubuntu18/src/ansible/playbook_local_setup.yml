@@ -1,0 +1,12 @@
+---
+
+- name: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.26.127"
+  raw: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.26.127"
+
+
+- name: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.27.32"
+  raw: ssh-keygen -f "/home/vagrant/.ssh/known_hosts" -R "129.114.27.32"
+
+- name: "chmod 600"
+  raw: sudo chmod 600 /home/vagrant/.ssh/id_ed25519
+...

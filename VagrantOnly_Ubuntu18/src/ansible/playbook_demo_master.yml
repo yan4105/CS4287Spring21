@@ -1,79 +1,107 @@
----
-
-
 #####################################################
-### Play 1: Create cloud VMs
+### Play 0: Setup Cloud VM
 #####################################################
-
-- name: Play 1 Create cloud VMs
+- name: "Play 0: Set up cloud VM"
   hosts: MyLocalVMs
-  remote_user: parallels
+  gather_facts: no
 
   tasks:
-   - include_tasks: playbook_delete_cloud_vms.yml
-   - include_tasks: playbook_create_cloud_vms.yml
-
-
+#  - include_tasks: playbook_delete_cloud_vms.yml
+#  - include_tasks: playbook_create_cloud_vms.yml
+#  - include_tasks: playbook_cleanup.yml
+  - include_tasks: playbook_local_setup.yml
+#  - pause:
+#      minutes: 1
 
 #####################################################
-### Play 2: Setup kafka
+### Play 2: Install docker
 #####################################################
-
-- name: "Play 2: Setup kafka"
+- name: "Play 0: Set up cloud VM"
   gather_facts: no
   hosts: MyChameleonVMs       # my list of VMs on chosen cloud
   remote_user:  cc        # remote user is cc but change as appropriate
 
-  tasks:    # the task to be performed (here I am showing the effect of include_)
-   - include_tasks: playbook_kafka_setup.yml
+  tasks:
+  - include_tasks: playbook_setup_cloud_vms.yml
+  - include_tasks: playbook_install_docker.yml
 
 
 #####################################################
-### Play 3: Copy consumer.py to VM2
+### Install Kube
 #####################################################
-
-- name: "Play 3: Copy consumer code to VM2"
-  hosts: VM2          # specified in the MyInventory file
-  remote_user: cc
-  gather_facts: no           # vagrant-created VM else use the
-                             # appropriate user name
-
-  tasks:    # the task to be performed (here I am showing the effect of include_)
-   - include_tasks: playbook_copy_consumer_to_cloud_vm.yml
-
-
-- name: "Play 4: Install CouchDB"
+- name: "Play 0: Set up cloud VM"
   gather_facts: no
-  hosts: VM3 
-  remote_user: cc
-  become: yes
+  hosts: MyChameleonVMs       # my list of VMs on chosen cloud
+  remote_user:  cc        # remote user is cc but change as appropriate
 
   tasks:
-    - include_tasks: playbook_couchdb_setup.yml
+  - include_tasks: playbook_install_kube.yml
 
-###########################################
-# Play 5: Now start zookeeper kafka and consumer
-###########################################
 
-- name: "Play 5: Start Zookeeper, Kafka, and consumer"
+#####################################################
+### Play 2: Start Kube
+#####################################################
+- name: "Play 0: Set up cloud VM"
   gather_facts: no
-  hosts: VM2
-  remote_user: cc
-  strategy: debug        # start a debugger on error
-  collections:               # import the plugin
-  - openstack.cloud
+  hosts: VM3             # my list of VMs on chosen cloud
+  remote_user: cc        # remote user is cc but change as appropriate
 
   tasks:
-  - include_tasks: playbook_start_server.yml
- 
- 
-    #- name: "Play 6: Delete Cloud VMs"
-    #  gather_facts: no
-    #  hosts: MyLocalVMs
-    #  remote_user: parallels
+  - include_tasks: playbook_start_kube.yml
 
-#  tasks:
-#    - include_tasks: playbook_delete_cloud_vms.yml
+#####################################################
+### Play 2: Join Kube
+#####################################################
+- name: "Play 0: Set up cloud VM"
+  gather_facts: no
+  hosts: VM2                  # my list of VMs on chosen cloud
+  remote_user: cc             # remote user is cc but change as appropriate
 
+  tasks:
+  - include_tasks: playbook_join_kube.yml
 
-...
+#####################################################
+### Install cloudant
+#####################################################
+- name: "Play 0: Set up cloud VM"
+  gather_facts: no
+  hosts: VM3  
+  remote_user: cc             # remote user is cc but change as appropriate
+
+  tasks:
+  - include_tasks: playbook_install_cloudant.yml
+
+#####################################################
+### Play 2: Install docker
+#####################################################
+- name: "Play 0: Set up cloud VM"
+  gather_facts: no
+  #  hosts: MyChameleonVMs  
+  hosts: VM3                # my list of VMs on chosen cloud
+  remote_user: cc             # remote user is cc but change as appropriate
+
+  tasks:
+  - include_tasks: playbook_run_docker_files.yml
+
+#####################################################
+### Play 2: Install couchdb
+#####################################################
+- name: "Play 0: Set up cloud VM"
+  gather_facts: no
+  hosts: VM2                  # my list of VMs on chosen cloud
+  remote_user: cc             # remote user is cc but change as appropriate
+
+  tasks:
+  - include_tasks: playbook_install_couchdb.yml
+
+#####################################################
+### Play 3: Install docker
+#####################################################
+- name: "Play 0: Set up cloud VM"
+  gather_facts: no
+  hosts: VM3                  # my list of VMs on chosen cloud
+  remote_user: cc             # remote user is cc but change as appropriate
+
+  tasks:
+  - include_tasks: playbook_kafka_setup.yml
+
